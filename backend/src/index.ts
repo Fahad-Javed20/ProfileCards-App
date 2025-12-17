@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import mongoose from "mongoose";
 
 dotenv.config();
 
@@ -140,64 +141,21 @@ const users: UserType[] = [
     profession: "Student",
     rating: 4.4,
   },
-  {
-    id: 15,
-    image:
-      "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzV8fHBlb3BsZXxlbnwwfHwwfHx8MA%3D%3D",
-    name: "Henry Walker",
-    description: "Fashion model with a unique style.",
-    profession: "Model",
-    rating: 4.7,
-  },
-  {
-    id: 16,
-    image:
-      "https://images.unsplash.com/photo-1535295972055-1c762f4483e5?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzZ8fHBlb3BsZXxlbnwwfHwwfHx8MA%3D%3D",
-    name: "Grace Young",
-    description: "Frontend developer crafting clean user interfaces.",
-    profession: "Frontend Developer",
-    rating: 4.9,
-  },
-  {
-    id: 17,
-    image:
-      "https://plus.unsplash.com/premium_photo-1675791727728-f829fde51f70?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mzd8fHBlb3BsZXxlbnwwfHwwfHx8MA%3D%3D",
-    name: "Daniel King",
-    description: "Entrepreneur building scalable startups.",
-    profession: "Business Owner",
-    rating: 4.6,
-  },
-  {
-    id: 18,
-    image:
-      "https://images.unsplash.com/photo-1542596594-649edbc13630?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDd8fHBlb3BsZXxlbnwwfHwwfHx8MA%3D%3D",
-    name: "Chloe Scott",
-    description: "Committed to delivering justice and fairness.",
-    profession: "Lawyer",
-    rating: 4.9,
-  },
-  {
-    id: 19,
-    image:
-      "https://images.unsplash.com/photo-1519699047748-de8e457a634e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Njd8fHBlb3BsZXxlbnwwfHwwfHx8MA%3D%3D",
-    name: "Matthew Green",
-    description: "Designing minimalistic and clean experiences.",
-    profession: "Product Designer",
-    rating: 4.8,
-  },
-  {
-    id: 20,
-    image:
-      "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NjJ8fHBlb3BsZXxlbnwwfHwwfHx8MA%3D%3D",
-    name: "Ella Harris",
-    description: "Making people smile with confidence.",
-    profession: "Dentist",
-    rating: 4.7,
-  },
 ];
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+
+mongoose.connect(process.env.MONGO_URL || "", {
+  // useNewUrlParser: true,
+  // useUnifiedTopology: true,  
+}).then(() => {
+  console.log("Connected to MongoDB");
+})
+.catch((error) => {
+  console.error("Error connecting to MongoDB:", error);
+});
 
 app.use(express.json());
 app.use(cors());
@@ -212,8 +170,46 @@ app.get("/users", (req, res) => {
   res.send(html);
 });
 
+// API - to get All the User
 app.get("/api/users", (req, res) => {
-  res.send(users);
+  return res.send(users);
+});
+
+// API - to get the User By ID
+app.get("/api/users/:id", (req, res) => {
+  const id = Number(req.params.id);
+  const user = users.find((user) => user.id === id);
+  return res.json(user);
+});
+
+// API - to Create a New User
+app.post("/api/users", (req, res) => {
+  const newUser = req.body;
+  users.push(newUser);
+  return res.status(201).json(newUser);
+});
+
+// API - to Update New User
+app.patch("/api/users/:id", (req, res) => {
+  const id = Number(req.params.id);
+  const updatedData = req.body;
+  const userIndex = users.findIndex((user) => user.id === id);
+  if (userIndex !== -1) {
+    users[userIndex] = { ...users[userIndex], ...updatedData };
+    return res.json(users[userIndex]);
+  }
+  return res.status(404).json({ error: "User not found" });
+});
+
+// API - to Delete a User By ID
+app.delete("/api/users/:id", (req, res) => {
+  const id = Number(req.params.id);
+  const userIndex = users.findIndex((user) => user.id === id);
+  if (userIndex !== -1) {
+    users.splice(userIndex, 1);
+    return res.json({ message: "User deleted successfully" });
+  }
+  return res.status(404).json({ error: "User not found" }); 
 });
 
 app.listen(PORT, () => {
