@@ -5,211 +5,93 @@ import mongoose from "mongoose";
 
 dotenv.config();
 
-type UserType = {
-  id: number;
-  name: string;
-  image: string;
-  description: string;
-  profession: string;
-  rating: number;
-};
-
-const users: UserType[] = [
-  {
-    id: 1,
-    image:
-      "https://plus.unsplash.com/premium_photo-1663054774427-55adfb2be76f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cGVvcGxlfGVufDB8fDB8fHww",
-    name: "Aiden Walker",
-    description: "Creative thinker who loves solving complex problems.",
-    profession: "UI/UX Designer",
-    rating: 4.8,
-  },
-  {
-    id: 2,
-    image:
-      "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cGVvcGxlfGVufDB8fDB8fHww",
-    name: "Sophia Martinez",
-    description: "Passionate about helping brands grow.",
-    profession: "Digital Marketer",
-    rating: 4.6,
-  },
-  {
-    id: 3,
-    image:
-      "https://plus.unsplash.com/premium_photo-1675791188810-3a01768c1e2f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8cGVvcGxlfGVufDB8fDB8fHww",
-    name: "Ethan Williams",
-    description: "Full-stack developer with 5+ years of experience.",
-    profession: "Software Engineer",
-    rating: 4.9,
-  },
-  {
-    id: 4,
-    image:
-      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8cGVvcGxlfGVufDB8fDB8fHww",
-    name: "Mia Johnson",
-    description: "Capturing moments through creative storytelling.",
-    profession: "Photographer",
-    rating: 4.7,
-  },
-  {
-    id: 5,
-    image:
-      "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8cGVvcGxlfGVufDB8fDB8fHww",
-    name: "Noah Brown",
-    description: "Loves experimenting with world cuisines.",
-    profession: "Chef",
-    rating: 4.5,
-  },
-  {
-    id: 6,
-    image:
-      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fHBlb3BsZXxlbnwwfHwwfHx8MA%3D%3D",
-    name: "Olivia Davis",
-    description: "Helping students achieve academic success.",
-    profession: "Teacher",
-    rating: 4.8,
-  },
-  {
-    id: 7,
-    image:
-      "https://plus.unsplash.com/premium_photo-1673957923985-b814a9dbc03d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fHBlb3BsZXxlbnwwfHwwfHx8MA%3D%3D",
-    name: "Liam Miller",
-    description: "Creating expressive illustrations and designs.",
-    profession: "Artist",
-    rating: 4.9,
-  },
-  {
-    id: 8,
-    image:
-      "https://images.unsplash.com/photo-1488161628813-04466f872be2?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fHBlb3BsZXxlbnwwfHwwfHx8MA%3D%3D",
-    name: "Emma Wilson",
-    description: "Dedicated to improving patient wellbeing.",
-    profession: "Doctor",
-    rating: 4.6,
-  },
-  {
-    id: 9,
-    image:
-      "https://images.unsplash.com/photo-1506277886164-e25aa3f4ef7f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fHBlb3BsZXxlbnwwfHwwfHx8MA%3D%3D",
-    name: "James Anderson",
-    description: "Engineering innovative solutions for modern challenges.",
-    profession: "Mechanical Engineer",
-    rating: 4.7,
-  },
-  {
-    id: 10,
-    image:
-      "https://plus.unsplash.com/premium_photo-1682681907111-c13bc10b1587?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjF8fHBlb3BsZXxlbnwwfHwwfHx8MA%3D%3D",
-    name: "Ava Thomas",
-    description: "Writer who loves crafting compelling stories.",
-    profession: "Content Writer",
-    rating: 4.8,
-  },
-  {
-    id: 11,
-    image:
-      "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjR8fHBlb3BsZXxlbnwwfHwwfHx8MA%3D%3D",
-    name: "Benjamin Moore",
-    description: "Creates music that inspires and uplifts.",
-    profession: "Musician",
-    rating: 4.5,
-  },
-  {
-    id: 12,
-    image:
-      "https://images.unsplash.com/photo-1491438590914-bc09fcaaf77a?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjZ8fHBlb3BsZXxlbnwwfHwwfHx8MA%3D%3D",
-    name: "Isabella Clark",
-    description: "Helping people achieve fitness goals.",
-    profession: "Fitness Trainer",
-    rating: 4.9,
-  },
-  {
-    id: 13,
-    image:
-      "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mjd8fHBlb3BsZXxlbnwwfHwwfHx8MA%3D%3D",
-    name: "Lucas Rodriguez",
-    description: "Researching innovative scientific breakthroughs.",
-    profession: "Scientist",
-    rating: 4.8,
-  },
-  {
-    id: 14,
-    image:
-      "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzB8fHBlb3BsZXxlbnwwfHwwfHx8MA%3D%3D",
-    name: "Harper Lewis",
-    description: "Curious learner with a passion for tech.",
-    profession: "Student",
-    rating: 4.4,
-  },
-];
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+mongoose
+  .connect(process.env.MONGO_URL || "")
+  .then(() => {
+    console.log("Conected to db");
+  })
+  .catch(() => {
+    console.error("Error connecting to MongoDB:");
+  });
 
-mongoose.connect(process.env.MONGO_URL || "", {
-  // useNewUrlParser: true,
-  // useUnifiedTopology: true,  
-}).then(() => {
-  console.log("Connected to MongoDB");
-})
-.catch((error) => {
-  console.error("Error connecting to MongoDB:", error);
-});
+  const UserSchema = new mongoose.Schema({
+    id: Number,
+    name: String,
+    image: String,
+    description: String,
+    profession: String,
+    rating: Number,
+  });
+
+  const User = mongoose.model("User", UserSchema);
 
 app.use(express.json());
 app.use(cors());
 
-app.get("/users", (req, res) => {
-  const html = `
-    <ul>
-      ${users.map((user) => `<li>${user.name}</li>`).join("")}
-    </ul>
-  `;
-
-  res.send(html);
-});
-
-// API - to get All the User
+// API - to get All the User form Database
 app.get("/api/users", (req, res) => {
-  return res.send(users);
+  User.find().then((users) => {
+    res.json(users);
+  }).catch((error) => {
+    res.status(500).json({ error: "Internal Server Error" });
+  });
 });
 
 // API - to get the User By ID
 app.get("/api/users/:id", (req, res) => {
-  const id = Number(req.params.id);
-  const user = users.find((user) => user.id === id);
-  return res.json(user);
+  const userId = req.params.id;
+  User.findById(userId).then((user) => {
+    if (user) {
+      res.json(user);
+    } else {
+      res.status(404).json({ error: "User not found" });
+    } }).catch((error) => {
+    res.status(500).json({ error: "Internal Server Error" });
+  });
+  
 });
 
 // API - to Create a New User
 app.post("/api/users", (req, res) => {
-  const newUser = req.body;
-  users.push(newUser);
-  return res.status(201).json(newUser);
+  const newUser = new User(req.body);
+  newUser.save().then((user) => {
+    res.status(201).json(user);
+  }).catch((error) => {
+    res.status(500).json({ error: "Internal Server Error" });
+  });
 });
 
 // API - to Update New User
 app.patch("/api/users/:id", (req, res) => {
-  const id = Number(req.params.id);
-  const updatedData = req.body;
-  const userIndex = users.findIndex((user) => user.id === id);
-  if (userIndex !== -1) {
-    users[userIndex] = { ...users[userIndex], ...updatedData };
-    return res.json(users[userIndex]);
-  }
-  return res.status(404).json({ error: "User not found" });
+  const userId = req.params.id;
+  User.findByIdAndUpdate(userId, req.body, { new: true }).then((user) => {
+    if (user) {
+      res.json(user);
+    } else {
+      res.status(404).json({ error: "User not found" });
+    }
+  }).catch((error) => {
+    res.status(500).json({ error: "Internal Server Error" });
+  });
 });
 
 // API - to Delete a User By ID
 app.delete("/api/users/:id", (req, res) => {
-  const id = Number(req.params.id);
-  const userIndex = users.findIndex((user) => user.id === id);
-  if (userIndex !== -1) {
-    users.splice(userIndex, 1);
-    return res.json({ message: "User deleted successfully" });
-  }
-  return res.status(404).json({ error: "User not found" }); 
+  const userId = req.params.id;
+  User.findByIdAndDelete(userId).then((user) => {
+    if (user) {
+      res.json({ message: "User deleted successfully" });
+    } else {
+      res.status(404).json({ error: "User not found" });
+    }
+  }).catch((error) => {
+    res.status(500).json({ error: "Internal Server Error" });
+  });
+  
 });
 
 app.listen(PORT, () => {
